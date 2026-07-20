@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+
+<div class="text-center">
+
+    <h1 class="display-4 fw-bold">
+        AI Resume Screener & Career Advisor
+    </h1>
+
+    <p class="lead mt-3">
+        Upload your resume, analyze your skills,
+        calculate ATS score and receive AI-powered
+        career guidance.
+    </p>
+
+    <a href="{% url 'register' %}" class="btn btn-primary btn-lg">
+    Get Started
+    </a>
+
+</div>
+
+
+<div class="row mt-5">
+
+    <div class="col-md-4">
+
+        <div class="card shadow">
+
+            <div class="card-body">
+
+                <h4>📄 Resume Upload</h4>
+
+                <p>
+                    Upload PDF and DOCX resumes.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <div class="card shadow">
+
+            <div class="card-body">
+
+                <h4>🎯 ATS Score</h4>
+
+                <p>
+                    Check resume compatibility with jobs.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <div class="card shadow">
+
+            <div class="card-body">
+
+                <h4>💼 Career Advisor</h4>
+
+                <p>
+                    Get AI-powered career suggestions.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

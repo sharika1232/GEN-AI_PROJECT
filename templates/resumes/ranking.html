@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}
+Resume Ranking
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="text-center mb-4">
+        🏆 Resume Ranking System
+    </h2>
+
+    {% if ranked_resumes %}
+
+    <div class="table-responsive">
+
+        <table class="table table-bordered table-hover align-middle text-center">
+
+            <thead class="table-dark">
+
+                <tr>
+
+                    <th>Rank</th>
+
+                    <th>Resume</th>
+
+                    <th>ATS Score</th>
+
+                    <th>Skill Score</th>
+
+                    <th>Completeness</th>
+
+                    <th>Final Score</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for item in ranked_resumes %}
+
+                <tr>
+
+                    <td>
+
+                        {% if forloop.counter == 1 %}
+                            🥇
+                        {% elif forloop.counter == 2 %}
+                            🥈
+                        {% elif forloop.counter == 3 %}
+                            🥉
+                        {% else %}
+                            {{ forloop.counter }}
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        <strong>
+                            {{ item.resume.title }}
+                        </strong>
+
+                    </td>
+
+                    <td>
+
+                        {{ item.ats_score }}%
+
+                    </td>
+
+                    <td>
+
+                        {{ item.skill_score }}
+
+                    </td>
+
+                    <td>
+
+                        {{ item.completeness }}
+
+                    </td>
+
+                    <td>
+
+                        <span class="badge bg-success fs-6">
+
+                            {{ item.final_score }}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <div class="alert alert-warning text-center">
+
+        No resumes available for ranking.
+
+    </div>
+
+    {% endif %}
+
+    <div class="text-center mt-4">
+
+        <a href="{% url 'dashboard' %}" class="btn btn-primary">
+
+            ← Back to Dashboard
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

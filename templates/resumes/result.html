@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AI Resume Analysis</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 40px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            color: #0d6efd;
+            text-align: center;
+        }
+
+        h2 {
+            color: green;
+        }
+
+        h3 {
+            color: #333;
+            margin-top: 30px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: #d4edda;
+            margin: 8px 0;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+
+        .missing li {
+            background: #f8d7da;
+        }
+
+        .jobs li {
+            background: #d1ecf1;
+        }
+
+        .suggestions li {
+            background: #fff3cd;
+        }
+
+        .score {
+            text-align: center;
+            font-size: 40px;
+            color: green;
+            font-weight: bold;
+        }
+
+        hr {
+            margin: 25px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 20px;
+            background: #0d6efd;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .btn:hover {
+            background: #084298;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>AI Resume Analysis</h1>
+
+    <hr>
+
+    <h3>Resume Title</h3>
+
+    <p><strong>{{ resume.title }}</strong></p>
+
+    <hr>
+
+    <h3>Extracted Skills</h3>
+
+    {% if skills %}
+
+    <ul>
+
+        {% for skill in skills %}
+
+        <li>✔ {{ skill }}</li>
+
+        {% endfor %}
+
+    </ul>
+
+    {% else %}
+
+    <p>No skills detected.</p>
+
+    {% endif %}
+
+    <hr>
+
+    <h3>ATS Score</h3>
+
+    <hr>
+    <hr>
+
+<h3>💪 Resume Strength</h3>
+
+<h2>
+    {{ strength.score }}%
+</h2>
+
+<h4>
+    {{ strength.level }}
+</h4>
+
+<hr>
+
+<h3>📄 Resume Completeness</h3>
+
+<h2>
+    {{ completeness.score }}%
+</h2>
+
+<h3>Resume Similarity</h3>
+
+<div class="text-center">
+
+    <h2 class="text-{{ similarity.color }}">
+        {{ similarity.percentage }}%
+    </h2>
+
+    <h4>
+        {{ similarity.level }}
+    </h4>
+
+</div>
+
+    <div class="score">
+        {{ ats_score }}%
+    </div>
+
+    <hr>
+
+    <h3>Matched Skills</h3>
+
+    {% if matched_skills %}
+
+    <ul>
+
+        {% for skill in matched_skills %}
+
+        <li>✔ {{ skill }}</li>
+
+        {% endfor %}
+
+    </ul>
+
+    {% else %}
+
+    <p>No matched skills.</p>
+
+    {% endif %}
+
+    <hr>
+
+    <h3>Missing Skills</h3>
+
+    {% if missing_skills %}
+
+    <ul class="missing">
+
+        {% for skill in missing_skills %}
+
+        <li>✖ {{ skill }}</li>
+
+        {% endfor %}
+
+    </ul>
+
+    {% else %}
+
+    <p>No missing skills.</p>
+
+    {% endif %}
+
+    <hr>
+
+    <h3>Recommended Job Roles</h3>
+
+    {% if recommended_jobs %}
+
+    <ul class="jobs">
+
+        {% for job in recommended_jobs %}
+
+        <li>💼 {{ job }}</li>
+
+        {% endfor %}
+
+    </ul>
+
+    {% else %}
+
+    <p>No recommendations available.</p>
+
+    {% endif %}
+
+    <hr>
+
+    <hr>
+
+<h3>🚀 AI Resume Improvement</h3>
+
+{% if resume_improvements %}
+
+<ul class="suggestions">
+
+    {% for improvement in resume_improvements %}
+
+    <li>{{ improvement }}</li>
+
+    {% endfor %}
+
+</ul>
+
+{% else %}
+
+<p>No improvement suggestions available.</p>
+
+{% endif %}
+
+    {% if suggestions %}
+
+    <ul class="suggestions">
+
+        {% for suggestion in suggestions %}
+
+        <li>💡 {{ suggestion }}</li>
+
+        {% endfor %}
+
+    </ul>
+
+    {% else %}
+
+    <p>No suggestions available.</p>
+
+    {% endif %}
+    <hr>
+
+<h3>AI Resume Feedback</h3>
+
+<div style="
+background:#eef7ff;
+padding:20px;
+border-left:6px solid #0d6efd;
+border-radius:8px;
+">
+
+<h4>⭐ Overall Review</h4>
+
+<p>{{ feedback.overall }}</p>
+
+<hr>
+
+<h4>💪 Strengths</h4>
+
+<ul>
+
+{% for item in feedback.strengths %}
+
+<li>{{ item }}</li>
+
+{% endfor %}
+
+</ul>
+
+<hr>
+
+<h4>📈 Improvements</h4>
+
+<ul>
+
+{% for item in feedback.improvements %}
+
+<li>{{ item }}</li>
+
+{% endfor %}
+
+</ul>
+
+<hr>
+
+<h4>🏆 Resume Rating</h4>
+
+<h2 style="color:green;">
+{{ feedback.rating }}
+</h2>
+
+</div>
+
+    <hr>
+
+    <hr>
+
+<h3>AI Generated Cover Letter</h3>
+
+<div style="
+background:#f8f9fa;
+padding:25px;
+border-left:6px solid #198754;
+border-radius:10px;
+line-height:1.8;
+white-space:pre-line;
+font-size:17px;
+">
+
+{{ cover_letter }}
+
+</div>
+
+<hr>
+<hr>
+
+<h3>Interview Questions</h3>
+
+{% if interview_questions %}
+
+    {% for skill, questions in interview_questions.items %}
+
+        <div style="margin-bottom:25px;">
+
+            <h4 style="color:#0d6efd;">
+                {{ skill|title }}
+            </h4>
+
+            <ul>
+
+                {% for question in questions %}
+
+                    <li>
+                        🎯 {{ question }}
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+    {% endfor %}
+
+{% else %}
+
+<p>No interview questions available.</p>
+
+{% endif %}
+
+    <a href="{% url 'upload_resume' %}" class="btn">
+        Upload Another Resume
+    </a>
+
+</div>
+
+</body>
+
+</html>

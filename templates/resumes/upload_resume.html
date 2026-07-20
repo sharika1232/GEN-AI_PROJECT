@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}
+Upload Resume
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-md-8">
+
+        <div class="card shadow-lg">
+
+
+            <div class="card-header bg-primary text-white">
+
+                <h3 class="text-center">
+                    AI Resume Screener
+                </h3>
+
+            </div>
+
+
+            <div class="card-body">
+
+
+                <form method="POST" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+
+
+
+                    <!-- Resume Title -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            <strong>
+                                Resume Title
+                            </strong>
+
+                        </label>
+
+                        {{ form.title }}
+
+                    </div>
+
+
+
+                    <!-- Resume Upload -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            <strong>
+                                Upload Resume (PDF / DOCX)
+                            </strong>
+
+                        </label>
+
+                        {{ form.resume_file }}
+
+                    </div>
+
+
+
+                    <!-- Company Name -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            <strong>
+                                🏢 Company Name
+                            </strong>
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            name="company_name"
+                            class="form-control"
+                            placeholder="Example: Google, Microsoft, Infosys"
+                        >
+
+                    </div>
+
+
+
+                    <!-- Job Role -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            <strong>
+                                💼 Target Job Role
+                            </strong>
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            name="job_role"
+                            class="form-control"
+                            placeholder="Example: Python Developer"
+                        >
+
+                    </div>
+
+
+
+                    <!-- Job Description -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            <strong>
+                                Paste Job Description
+                            </strong>
+
+                        </label>
+
+
+                        {{ form.job_description }}
+
+
+                        <small class="text-muted">
+
+                            Copy and paste the complete job description from LinkedIn, Naukri, Indeed, etc.
+
+                        </small>
+
+
+                    </div>
+
+
+
+                    <button 
+                        type="submit" 
+                        class="btn btn-success w-100">
+
+                        🚀 Analyze Resume
+
+                    </button>
+
+
+                </form>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

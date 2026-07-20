@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}
+Resume Version Comparison
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4 text-center">
+        📊 Resume Version Comparison
+    </h2>
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+                        <th>Category</th>
+                        <th>{{ comparison.old_title }}</th>
+                        <th>{{ comparison.new_title }}</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>ATS Score</td>
+                        <td>{{ comparison.old_score }}%</td>
+                        <td>{{ comparison.new_score }}%</td>
+                    </tr>
+
+                    <tr>
+                        <td>Total Skills</td>
+                        <td>{{ comparison.old_skill_count }}</td>
+                        <td>{{ comparison.new_skill_count }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Score Improvement</td>
+                        <td colspan="2">
+
+                            {% if comparison.score_difference > 0 %}
+
+                                <span class="text-success fw-bold">
+                                    +{{ comparison.score_difference }}%
+                                </span>
+
+                            {% elif comparison.score_difference < 0 %}
+
+                                <span class="text-danger fw-bold">
+                                    {{ comparison.score_difference }}%
+                                </span>
+
+                            {% else %}
+
+                                <span class="text-primary">
+                                    No Change
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>New Skills Added</td>
+
+                        <td colspan="2">
+
+                            {% if comparison.new_skills_added %}
+
+                                <ul>
+
+                                    {% for skill in comparison.new_skills_added %}
+
+                                        <li>{{ skill }}</li>
+
+                                    {% endfor %}
+
+                                </ul>
+
+                            {% else %}
+
+                                No new skills added.
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>Skills Removed</td>
+
+                        <td colspan="2">
+
+                            {% if comparison.skills_removed %}
+
+                                <ul>
+
+                                    {% for skill in comparison.skills_removed %}
+
+                                        <li>{{ skill }}</li>
+
+                                    {% endfor %}
+
+                                </ul>
+
+                            {% else %}
+
+                                No skills removed.
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    <tr class="table-success">
+
+                        <th>Winner</th>
+
+                        <th colspan="2">
+                            🏆 {{ comparison.winner }}
+                        </th>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+            <a href="{% url 'resume_history' %}"
+               class="btn btn-primary">
+
+                ← Back to History
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,316 @@
+{% extends 'base.html' %}
+
+{% block title %}
+AI Job Match Predictor
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container mt-4">
+
+
+    <div class="card shadow">
+
+
+        <div class="card-header bg-success text-white">
+
+            <h2>
+                🎯 AI Job Match Predictor
+            </h2>
+
+            <p class="mb-0">
+                Resume:
+                <strong>
+                    {{ resume.title }}
+                </strong>
+            </p>
+
+        </div>
+
+
+
+        <div class="card-body">
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Paste Job Description
+                    </label>
+
+
+                    <textarea
+
+                        name="job_description"
+
+                        rows="8"
+
+                        class="form-control"
+
+                        placeholder="Paste the complete job description here..."
+
+                        required>{{ job_description }}</textarea>
+
+
+                </div>
+
+
+
+                <button class="btn btn-success">
+
+                    Predict Match
+
+                </button>
+
+
+            </form>
+
+
+
+            {% if result %}
+
+
+            <hr>
+
+
+
+            {% if result.error %}
+
+
+                <div class="alert alert-danger">
+
+                    {{ result.error }}
+
+                </div>
+
+
+            {% else %}
+
+
+
+            <h3>📊 Match Score</h3>
+
+<div class="progress" style="height:30px;">
+
+    <div class="progress-bar bg-success"
+         role="progressbar"
+         aria-valuenow="{{ result.match_score }}"
+         aria-valuemin="0"
+         aria-valuemax="100"
+         id="scoreBar">
+
+        {{ result.match_score }}%
+
+    </div>
+
+</div>
+
+
+<script>
+
+    let score = "{{ result.match_score }}";
+
+    document.getElementById("scoreBar").style.width = score + "%";
+
+</script>
+
+
+
+            <table class="table table-bordered">
+
+
+                <tr>
+
+                    <th>
+                        Interview Chance
+                    </th>
+
+                    <td>
+                        {{ result.interview }}
+                    </td>
+
+                </tr>
+
+
+
+                <tr>
+
+                    <th>
+                        Expected Salary
+                    </th>
+
+                    <td>
+                        {{ result.salary }}
+                    </td>
+
+                </tr>
+
+
+
+                <tr>
+
+                    <th>
+                        Recommendation
+                    </th>
+
+                    <td>
+                        {{ result.recommendation }}
+                    </td>
+
+                </tr>
+
+
+
+            </table>
+
+
+
+
+            <hr>
+
+
+            <h3>
+                ✅ Matched Skills
+            </h3>
+
+
+            <ul>
+
+
+            {% for skill in result.matched_skills %}
+
+
+                <li>
+                    {{ skill }}
+                </li>
+
+
+            {% empty %}
+
+
+                <li>
+                    No matched skills.
+                </li>
+
+
+            {% endfor %}
+
+
+            </ul>
+
+
+
+
+
+            <hr>
+
+
+            <h3>
+                ❌ Missing Skills
+            </h3>
+
+
+            <ul>
+
+
+            {% for skill in result.missing_skills %}
+
+
+                <li>
+                    {{ skill }}
+                </li>
+
+
+            {% empty %}
+
+
+                <li>
+                    No missing skills.
+                </li>
+
+
+            {% endfor %}
+
+
+            </ul>
+
+
+
+
+
+
+            <hr>
+
+
+            <h3>
+                🚀 Improvement Suggestions
+            </h3>
+
+
+            <ul>
+
+
+            {% for item in result.improvement %}
+
+
+                <li>
+                    {{ item }}
+                </li>
+
+
+            {% empty %}
+
+
+                <li>
+                    No improvement suggestions.
+                </li>
+
+
+            {% endfor %}
+
+
+            </ul>
+
+
+
+            {% endif %}
+
+
+
+            {% endif %}
+
+
+
+
+            <hr>
+
+
+
+            <a href="{% url 'resume_detail' resume.id %}"
+
+               class="btn btn-secondary">
+
+
+                ← Back to Resume
+
+
+            </a>
+
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

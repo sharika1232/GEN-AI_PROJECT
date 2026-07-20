@@ -1,0 +1,465 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>{{ resume.title }}</h2>
+
+    <h3>🎯 ATS Score: {{ ats_score }}%</h3>
+
+    <hr>
+
+    <!-- Resume Strength -->
+
+    <h3>💪 Resume Strength</h3>
+
+    <h2>{{ strength.score }}%</h2>
+
+    <h4>{{ strength.level }}</h4>
+
+    <hr>
+
+    <!-- AI Resume Score Breakdown -->
+
+    <h2>📊 AI Resume Score Breakdown</h2>
+
+    <table class="table table-bordered table-striped">
+
+        <thead class="table-dark">
+            <tr>
+                <th>Category</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <tr>
+                <td>🎯 Skills Match</td>
+                <td>{{ score_breakdown.skills_match }}%</td>
+            </tr>
+
+            <tr>
+                <td>📄 Resume Completeness</td>
+                <td>{{ score_breakdown.completeness }}%</td>
+            </tr>
+
+            <tr>
+                <td>📝 Formatting</td>
+                <td>{{ score_breakdown.formatting }}%</td>
+            </tr>
+
+            <tr>
+                <td>💻 Projects</td>
+                <td>{{ score_breakdown.projects }}%</td>
+            </tr>
+
+            <tr>
+                <td>🏢 Experience</td>
+                <td>{{ score_breakdown.experience }}%</td>
+            </tr>
+
+            <tr class="table-success">
+                <th>⭐ Overall Rating</th>
+                <th>{{ score_breakdown.rating }}</th>
+            </tr>
+
+            <tr class="table-info">
+                <th>🏆 Resume Level</th>
+                <th>{{ score_breakdown.level }}</th>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    <hr>
+
+    <!-- Resume Completeness -->
+
+    <h3>📄 Resume Completeness</h3>
+
+    <h2>{{ completeness_score }}%</h2>
+
+    <h4>{{ completeness_report }}</h4>
+
+    <hr>
+
+    <!-- Resume Similarity -->
+
+    <h3>📑 Resume Similarity</h3>
+
+    <h2>{{ similarity_percentage }}%</h2>
+
+    <h4>{{ similarity_level }}</h4>
+
+    <hr>
+
+    <!-- Skills -->
+
+    <h3>🛠 Skills Found</h3>
+
+    <ul>
+        {% for skill in skills %}
+            <li>{{ skill }}</li>
+        {% empty %}
+            <li>No skills found.</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <!-- Matched Skills -->
+
+    <h3>✅ Matched Skills</h3>
+
+    <ul>
+        {% for skill in matched_skills %}
+            <li>{{ skill }}</li>
+        {% empty %}
+            <li>No matched skills.</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <!-- Missing Skills -->
+
+    <h3>❌ Missing Skills</h3>
+
+    <ul>
+        {% for skill in missing_skills %}
+            <li>{{ skill }}</li>
+        {% empty %}
+            <li>No missing skills.</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <!-- Recommended Jobs -->
+
+    <h3>💼 Recommended Jobs</h3>
+
+    <ul>
+        {% for job in recommended_jobs %}
+            <li>{{ job }}</li>
+        {% empty %}
+            <li>No recommendations available.</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <!-- Suggestions -->
+
+    <h3>💡 Suggestions</h3>
+
+    <ul>
+        {% for suggestion in suggestions %}
+            <li>{{ suggestion }}</li>
+        {% empty %}
+            <li>No suggestions available.</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <!-- Resume Improvement -->
+
+    <h3>🚀 AI Resume Improvement</h3>
+
+    {% if resume_improvements %}
+
+        <ul>
+            {% for improvement in resume_improvements %}
+                <li>{{ improvement }}</li>
+            {% endfor %}
+        </ul>
+
+    {% elif improvement_suggestions %}
+
+        <ul>
+            {% for suggestion in improvement_suggestions %}
+                <li>{{ suggestion }}</li>
+            {% endfor %}
+        </ul>
+
+    {% else %}
+
+        <p>No improvement suggestions available.</p>
+
+    {% endif %}
+
+    <hr>
+
+    <!-- Career Roadmap -->
+
+    <h2>🚀 AI Career Roadmap</h2>
+
+    <p>
+        <strong>Career Goal:</strong>
+        {{ career_roadmap.career_goal }}
+    </p>
+
+    <h3>📚 Missing Skills</h3>
+
+    {% if career_roadmap.missing_skills %}
+
+        <ul>
+            {% for skill in career_roadmap.missing_skills %}
+                <li>{{ skill }}</li>
+            {% endfor %}
+        </ul>
+
+    {% else %}
+
+        <p>No missing skills identified.</p>
+
+    {% endif %}
+
+    <hr>
+
+    <h3>🗓 6-Month Learning Plan</h3>
+
+    <ol>
+
+        {% for month in career_roadmap.monthly_plan %}
+            <li>{{ month }}</li>
+        {% empty %}
+            <li>No roadmap available.</li>
+        {% endfor %}
+
+    </ol>
+
+    <hr>
+
+    <h3>💻 Recommended Projects</h3>
+
+    <ul>
+
+        {% for project in career_roadmap.projects %}
+            <li>{{ project }}</li>
+        {% empty %}
+            <li>No projects recommended.</li>
+        {% endfor %}
+
+    </ul>
+
+    <hr>
+
+    <h3>🎓 Recommended Certifications</h3>
+
+    <ul>
+
+        {% for cert in career_roadmap.certifications %}
+            <li>{{ cert }}</li>
+        {% empty %}
+            <li>No certifications recommended.</li>
+        {% endfor %}
+
+    </ul>
+
+    <hr>
+
+<!-- ========================================================== -->
+<!-- AI Interview Questions -->
+<!-- ========================================================== -->
+
+<h2>🎤 AI Interview Questions</h2>
+
+{% if interview_questions %}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <p class="text-success">
+            <strong>Total Questions:</strong>
+            {{ interview_questions|length }}
+        </p>
+
+        <ol>
+
+            {% for question in interview_questions %}
+
+                <li style="margin-bottom:15px;">
+                    {{ question }}
+                </li>
+
+            {% endfor %}
+
+        </ol>
+
+    </div>
+
+</div>
+
+{% else %}
+
+<p>No interview questions available.</p>
+
+{% endif %}
+
+<hr>
+
+    <!-- Learning Resources -->
+
+    <h2>📚 AI Learning Resources</h2>
+
+    {% if learning_resources %}
+
+        {% for skill, resources in learning_resources.items %}
+
+            <h4>{{ skill }}</h4>
+
+            <ul>
+
+                {% for resource in resources %}
+                    <li>{{ resource }}</li>
+                {% endfor %}
+
+            </ul>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No learning resources available.</p>
+
+    {% endif %}
+
+    <hr>
+
+    <hr>
+
+<h2>🎯 Resume Keyword Optimizer</h2>
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <h4>Target Job Role:
+            <span class="text-primary">
+                {{ keyword_report.job_role }}
+            </span>
+        </h4>
+
+        <br>
+
+        <h5>
+            Keyword Match:
+            <span class="badge bg-success">
+                {{ keyword_report.match_percentage }}%
+            </span>
+        </h5>
+
+        <hr>
+
+        <h4 class="text-success">
+            ✅ Matched Keywords
+        </h4>
+
+        <ul>
+
+        {% for skill in keyword_report.matched_keywords %}
+            <li>{{ skill }}</li>
+        {% empty %}
+            <li>No matched keywords.</li>
+        {% endfor %}
+
+        </ul>
+
+        <hr>
+
+        <h4 class="text-danger">
+            ❌ Missing Keywords
+        </h4>
+
+        <ul>
+
+        {% for skill in keyword_report.missing_keywords %}
+            <li>{{ skill }}</li>
+        {% empty %}
+            <li>No missing keywords.</li>
+        {% endfor %}
+
+        </ul>
+
+    </div>
+
+</div>
+
+<hr>
+
+    <a href="{% url 'resume_history' %}" class="btn btn-secondary">
+        ⬅ Back to History
+    </a>
+
+    <hr>
+
+<h2>📄 AI Cover Letter</h2>
+
+<div class="card shadow">
+
+    <div class="card-body">
+
+        <pre style="white-space: pre-wrap; font-family: Arial;">
+{{ cover_letter }}
+        </pre>
+
+        <hr>
+
+        <a href="{% url 'download_cover_letter' resume.id %}" 
+           class="btn btn-primary">
+
+            ⬇ Download Cover Letter PDF
+
+        </a>
+
+    </div>
+
+</div>
+
+<hr>
+
+    <hr>
+
+<a href="{% url 'chat_resume' resume.id %}"
+   class="btn btn-primary">
+
+    🤖 Chat with AI
+
+</a>
+
+<a href="{% url 'job_match' resume.id %}"
+   class="btn btn-warning">
+
+    🎯 AI Job Match Predictor
+
+</a>
+
+    &nbsp;
+
+<br><br>
+
+<a href="{% url 'resume_history' %}"
+   class="btn btn-secondary">
+
+    ← Back to History
+
+</a>
+
+<!-- <a href="{% url 'chat_resume' resume.id %}" -->
+   <!-- class="btn btn-primary"> -->
+    <!-- 🤖 AI Resume Assistant -->
+<!-- </a> -->
+
+    <a href="{% url 'download_report' resume.id %}" class="btn btn-success">
+        📄 Download PDF Report
+    </a>
+
+</div>
+
+{% endblock %}

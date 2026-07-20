@@ -1,0 +1,366 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h2 class="page-title mb-4">
+        📊 AI Resume Dashboard
+    </h2>
+
+    <a href="{% url 'resume_ranking' %}" class="btn btn-success mb-3">
+    🏆 Resume Ranking
+</a>
+
+    <!-- Statistics Cards -->
+
+    <div class="row">
+
+        <div class="col-md-3 mb-4">
+
+            <div class="card dashboard-card text-center p-4">
+
+                <h6>Total Resumes</h6>
+
+                <div class="stat-number">
+
+                    {{ total_resumes }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3 mb-4">
+
+            <div class="card dashboard-card text-center p-4">
+
+                <h6>Average ATS</h6>
+
+                <div class="stat-number">
+
+                    {{ average_score }}%
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3 mb-4">
+
+            <div class="card dashboard-card text-center p-4">
+
+                <h6>Highest ATS</h6>
+
+                <div class="stat-number">
+
+                    {{ highest_score }}%
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3 mb-4">
+
+            <div class="card dashboard-card text-center p-4">
+
+                <h6>Lowest ATS</h6>
+
+                <div class="stat-number">
+
+                    {{ lowest_score }}%
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ATS Score Analytics -->
+
+<div class="card dashboard-card mb-4">
+
+    <div class="card-header bg-info text-white">
+
+        📊 ATS Score Analytics
+
+    </div>
+
+    <div class="card-body">
+
+        <canvas id="atsChart" height="100"></canvas>
+
+    </div>
+
+</div>
+
+    <!-- Best Resume -->
+
+    {% if best_resume %}
+
+    <div class="card dashboard-card mb-4">
+
+        <div class="card-header bg-success text-white">
+
+            🏆 Best Performing Resume
+
+        </div>
+
+        <div class="card-body">
+
+            <h4>{{ best_resume.title }}</h4>
+
+            <h5 class="text-success">
+
+                ATS Score : {{ best_resume.ats_score }}%
+
+            </h5>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    <!-- Quick Actions -->
+
+    <div class="card dashboard-card mb-4">
+
+        <div class="card-header bg-primary text-white">
+
+            ⚡ Quick Actions
+
+        </div>
+
+        <div class="card-body">
+
+            <a href="{% url 'upload_resume' %}"
+               class="btn btn-primary me-2">
+
+                Upload Resume
+
+            </a>
+
+            <a href="{% url 'resume_history' %}"
+               class="btn btn-success me-2">
+
+                Resume History
+
+            </a>
+
+            <a href="{% url 'compare_resumes' %}"
+               class="btn btn-warning">
+
+                Compare Resumes
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Resume Table -->
+
+    <div class="card dashboard-card">
+
+        <div class="card-header bg-dark text-white">
+
+            Recent Resume Uploads
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-hover">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Resume</th>
+
+                        <th>ATS Score</th>
+
+                        <th>Uploaded</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for resume in resumes %}
+
+                    <tr>
+
+                        <td>
+
+                            {{ resume.title }}
+
+                        </td>
+
+                        <td>
+
+                            {% if resume.ats_score >= 80 %}
+
+                                <span class="badge bg-success">
+
+                                    {{ resume.ats_score }}%
+
+                                </span>
+
+                            {% elif resume.ats_score >= 60 %}
+
+                                <span class="badge bg-warning text-dark">
+
+                                    {{ resume.ats_score }}%
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-danger">
+
+                                    {{ resume.ats_score }}%
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {{ resume.uploaded_at|date:"d M Y" }}
+
+                        </td>
+
+                        <td>
+
+                            <a href="{% url 'resume_detail' resume.id %}"
+                               class="btn btn-primary btn-sm">
+
+                                View
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="4" class="text-center">
+
+                            No resumes uploaded yet.
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const labels = JSON.parse('{{ chart_labels|escapejs }}');
+
+const scores = JSON.parse('{{ chart_scores|escapejs }}');
+
+new Chart(document.getElementById("atsChart"), {
+
+    type: "bar",
+
+    data: {
+
+        labels: labels,
+
+        datasets: [{
+
+            label: "ATS Score",
+
+            data: scores,
+
+            backgroundColor: [
+                "#0d6efd",
+                "#198754",
+                "#ffc107",
+                "#dc3545",
+                "#6f42c1",
+                "#20c997",
+                "#fd7e14",
+                "#6610f2"
+            ],
+
+            borderRadius: 8
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+
+                display: false
+
+            }
+
+        },
+
+        scales: {
+
+            y: {
+
+                beginAtZero: true,
+
+                max: 100,
+
+                ticks: {
+
+                    stepSize: 10
+
+                }
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

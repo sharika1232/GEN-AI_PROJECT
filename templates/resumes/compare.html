@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% block title %}Compare Resumes{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-10">
+
+            <div class="card shadow-lg border-0 rounded-4">
+
+                <div class="card-body p-4">
+
+                    <h2 class="text-center mb-4">
+                        📊 Compare Two Resumes
+                    </h2>
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-bold">
+                                    Resume 1
+                                </label>
+
+                                <select
+                                    name="resume1"
+                                    class="form-select">
+
+                                    {% for resume in resumes %}
+
+                                    <option value="{{ resume.id }}"
+                                        {% if resume1.id == resume.id %}selected{% endif %}>
+                                        {{ resume.title }}
+                                    </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-bold">
+                                    Resume 2
+                                </label>
+
+                                <select
+                                    name="resume2"
+                                    class="form-select">
+
+                                    {% for resume in resumes %}
+
+                                    <option value="{{ resume.id }}"
+                                        {% if resume2.id == resume.id %}selected{% endif %}>
+                                        {{ resume.title }}
+                                    </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <div class="text-center">
+
+                            <button
+                                class="btn btn-primary btn-lg px-5"
+                                type="submit">
+
+                                <i class="bi bi-bar-chart-fill"></i>
+                                Compare
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            {% if resume1 and resume2 %}
+
+            <div class="card shadow-lg border-0 rounded-4 mt-5">
+
+                <div class="card-body">
+
+                    <h3 class="text-center mb-4">
+
+                        📑 Comparison Result
+
+                    </h3>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered table-hover align-middle">
+
+                            <thead class="table-primary">
+
+                                <tr>
+
+                                    <th>Feature</th>
+
+                                    <th>{{ resume1.title }}</th>
+
+                                    <th>{{ resume2.title }}</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                <tr>
+
+                                    <td><strong>ATS Score</strong></td>
+
+                                    <td>
+
+                                        <span class="badge bg-success fs-6">
+                                            {{ resume1.ats_score }}%
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        <span class="badge bg-success fs-6">
+                                            {{ resume2.ats_score }}%
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+
+                                    <td><strong>Skills</strong></td>
+
+                                    <td>{{ resume1.skills }}</td>
+
+                                    <td>{{ resume2.skills }}</td>
+
+                                </tr>
+
+                                <tr>
+
+                                    <td><strong>Uploaded On</strong></td>
+
+                                    <td>
+                                        {{ resume1.uploaded_at|date:"d M Y" }}
+                                    </td>
+
+                                    <td>
+                                        {{ resume2.uploaded_at|date:"d M Y" }}
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+
+                                    <td><strong>Best ATS Score</strong></td>
+
+                                    {% if resume1.ats_score > resume2.ats_score %}
+
+                                        <td class="text-success fw-bold">
+                                            🏆 Better
+                                        </td>
+
+                                        <td>
+                                            -
+                                        </td>
+
+                                    {% elif resume2.ats_score > resume1.ats_score %}
+
+                                        <td>
+                                            -
+                                        </td>
+
+                                        <td class="text-success fw-bold">
+                                            🏆 Better
+                                        </td>
+
+                                    {% else %}
+
+                                        <td class="text-primary fw-bold">
+                                            🤝 Equal
+                                        </td>
+
+                                        <td class="text-primary fw-bold">
+                                            🤝 Equal
+                                        </td>
+
+                                    {% endif %}
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

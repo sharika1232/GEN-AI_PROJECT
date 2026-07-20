@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}
+AI Resume Chatbot
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h2>🤖 AI Resume Chatbot</h2>
+            <p class="mb-0">
+                Resume: <strong>{{ resume.title }}</strong>
+            </p>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Ask anything about your resume
+                    </label>
+
+                    <input
+                        type="text"
+                        name="question"
+                        class="form-control"
+                        placeholder="Example: How can I improve my ATS score?"
+                        value="{{ question }}"
+                        required
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-success">
+
+                    Ask AI
+
+                </button>
+
+            </form>
+
+            {% if answer %}
+
+            <hr>
+
+            <div class="alert alert-info">
+
+                <h4>🤖 AI Response</h4>
+
+                <p>{{ answer }}</p>
+
+            </div>
+
+            {% endif %}
+
+            <hr>
+
+            <h4>💡 Try asking:</h4>
+
+            <ul>
+                <li>What is my ATS score?</li>
+                <li>Which skills are missing?</li>
+                <li>How can I improve my resume?</li>
+                <li>Which jobs are suitable for me?</li>
+                <li>Which projects should I build?</li>
+                <li>Which certifications should I do?</li>
+                <li>Show my career roadmap.</li>
+            </ul>
+
+            <a
+                href="{% url 'resume_detail' resume.id %}"
+                class="btn btn-secondary">
+
+                ← Back to Resume
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
